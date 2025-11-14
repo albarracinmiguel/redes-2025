@@ -1,6 +1,6 @@
 # Entorno de virtualización Python
 
-# Pasos de instalación:
+# Pasos de instalación en Linux:
 
 ## 1. Clonación del proyecto
 
@@ -25,5 +25,9 @@ En la carpeta raíz de nuestro proyecto y dentro del entorno virtual escribimos:
 <img width="736" height="412" alt="image" src="https://github.com/user-attachments/assets/2a795fcd-2cf8-47ef-a5a6-d21e09ce967f" />
 
 Tal como se ve en la figura seleccionamos Python 3.10.12 (cisco) que se mostrará como entorno recomendado.
+
+## 5. Desactivación del entorno virtual
+
+Simplemente escribimos en la línea de comandos: **deactivate**
 
 
