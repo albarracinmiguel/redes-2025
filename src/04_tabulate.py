@@ -32,8 +32,10 @@ host_list=[]
 i=0
 for item in result["response"]:
     i+=1
-    host_list.append([i,item["hostname"],item["serialNumber"],item["softwareVersion"]])
-    #print(item["hostname"]+" "+item["serialNumber"]+" "+item["softwareVersion"]) #Lista completa
+    hostname = item.get("hostname", "N/A")
+    serialNumber = item.get("serialNumber", "N/A")
+    softwareVersion = item.get("softwareVersion", "N/A")
+    host_list.append([i,hostname,serialNumber,softwareVersion])
 
 print(tabulate(host_list,headers=["Hostname","Serial Number","Software Version"],tablefmt='rst')) #Tabla ordenada 
 
