@@ -1,33 +1,145 @@
-# Entorno de virtualización Python
+# Cisco Packet Tracer API
+![alt text](image.png)
 
-# Pasos de instalación en Linux:
+## Inicio
 
-## 1. Clonación del proyecto
+### 1. Activar entorno y ejecutar demo completa
+```powershell
+cd d:\code\facultad\redes\apiPython
+.\venv\Scripts\activate
+cd src
+python demo_all_crud.py
+```
 
-Desde la terminal ejecutar:
+### 2. Ejecutar scripts individuales
+```powershell
+# Network Devices (6 endpoints)
+python crud_network_devices.py
 
-**git clone** <URL_del_repositorio> <nombre_de_la_carpeta_de_destino>
+# Hosts (4 endpoints)
+python crud_hosts.py
 
-Luego ejecutar **cd** <nombre_de_la_carpeta_de_destino>. Esta carpeta será la raíz de nuestro proyecto en Python.
+# Users (5 endpoints)
+python crud_users.py
 
-## 2. Creación del entorno virtual
+# Discovery (6 endpoints)
+python crud_discovery.py
 
-Supongamos que el nombre que le damos al entorno virtual es **cisco**, entonces se creará una carpeta **cisco** con todas las librerías y dependencias necesarias paea nuestro proyecto. Para activar el entorno escribimos **source cisco/bin/activate**, en la carpeta raíz del proyecto. El nombre del entorno virtual aparecerá entre paréntesis ().
+# Policy Tags (4 endpoints)
+python crud_policy_tags.py
+```
 
-## 3. Instalación de las dependencias, en este caso las librerías requests y tabulate
+## Autenticacion
 
-En la carpeta raíz de nuestro proyecto y dentro del entorno virtual escribimos: **pip install -r requirements.txt**
+```python
+from api_client import CiscoAPIClient
 
-## 4. Selección del intérprete Python para nuestro entorno virtual
+client = CiscoAPIClient()
+# El ticket se obtiene automaticamente
+```
 
-<img width="881" height="118" alt="image" src="https://github.com/user-attachments/assets/18c41d8e-d338-48b6-953c-b2499c57319f" />
+## Ejemplos Rapidos
 
-<img width="736" height="412" alt="image" src="https://github.com/user-attachments/assets/2a795fcd-2cf8-47ef-a5a6-d21e09ce967f" />
+### Network Devices
+```python
+from crud_network_devices import *
+from api_client import CiscoAPIClient
 
-Tal como se ve en la figura seleccionamos Python 3.10.12 (cisco) que se mostrará como entorno recomendado.
+client = CiscoAPIClient()
 
-## 5. Desactivación del entorno virtual
+# Listar todos
+get_all_network_devices(client)
 
-Simplemente escribimos en la línea de comandos: **deactivate**
+# Agregar nuevo
+create_network_device(client, "192.168.1.1")
 
+# Obtener por IP
+get_network_device_by_ip(client, "192.168.1.1")
 
+# Actualizar
+update_network_device(client, "device-id")
+
+# Eliminar
+delete_network_device_by_ip(client, "192.168.1.1")
+```
+
+### Hosts
+```python
+from crud_hosts import *
+
+# Contar
+get_host_count(client)
+
+# Listar
+get_all_hosts(client)
+
+# Por IP
+get_host_by_ip(client, "172.16.1.30")
+
+# Eliminar
+delete_host_by_ip(client, "172.16.1.30")
+```
+
+### Users
+```python
+from crud_users import *
+
+# Crear
+create_user(client, "testuser", "Pass123!", "ROLE-OBSERVER")
+
+# Listar
+get_all_users(client)
+
+# Obtener
+get_user(client, "testuser")
+
+# Actualizar
+update_user(client, "testuser", new_password="NewPass!")
+
+# Eliminar
+delete_user(client, "testuser")
+```
+
+### Discovery
+```python
+from crud_discovery import *
+
+# Crear
+create_discovery(client, "My-Discovery", "192.168.1.1-192.168.1.50")
+
+# Listar
+get_all_discoveries(client)
+
+# Por ID
+get_discovery_by_id(client, "disc-id")
+
+# Actualizar
+update_discovery(client, "disc-id", name="New-Name")
+
+# Eliminar
+delete_discovery_by_id(client, "disc-id")
+```
+
+### Policy Tags
+```python
+from crud_policy_tags import *
+
+# Crear
+create_policy_tag(client, "My-Tag", "Description")
+
+# Listar
+get_all_policy_tags(client)
+
+# Contar
+get_policy_tags_count(client)
+
+# Eliminar
+delete_policy_tag(client, "tag-id")
+```
+
+## Archivos 
+
+- `config.py` - Configuracion (URLs, IPs, credenciales)
+- `api_client.py` - Cliente API reutilizable
+- `crud_*.py` - Scripts CRUD por recurso
+- `demo_all_crud.py` - Demo completa
