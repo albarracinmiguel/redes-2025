@@ -117,26 +117,28 @@ def get_network_device_by_ip(client: CiscoAPIClient, ip_address: str):
         return None
 
 
-def update_network_device(client: CiscoAPIClient, device_id: str):
-    """PUT - Actualizar dispositivo de red (sincronizar)"""
+def update_network_device(client: CiscoAPIClient, ip_address: str, global_credential_id: str):
+    """PUT - Actualizar dispositivo de red"""
     print("\n" + "="*60)
-    print(f"PUT - Actualizar/Sincronizar Network Device ID: {device_id}")
+    print(f"PUT - Network Device IP: {ip_address}")
     print("="*60)
     
     data = {
-        "id": device_id
+        "ipAddress": ip_address,
+        "globalCredentialId": global_credential_id
     }
     
     try:
         response = client.put("/network-device", data)
         
-        if "response" in response:
+        if "response" in response or "discoveryId" in response:
             result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
+                "Discovery ID", response.get("discoveryId", "N/A")
             ], [
-                "URL", response["response"].get("url", "N/A")
+                "Version", response.get("version", "N/A")
             ]]
-            print("\nDispositivo actualizado exitosamente:")
+            
+            print("\n✓ Dispositivo actualizado exitosamente:")
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
         else:
             print(json.dumps(response, indent=2))

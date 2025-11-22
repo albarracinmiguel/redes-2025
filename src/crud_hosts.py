@@ -54,7 +54,7 @@ def get_host_by_ip(client: CiscoAPIClient, ip_address: str):
     print("="*60)
     
     try:
-        response = client.get(f"/host/ip/{ip_address}")
+        response = client.get(f"/host/ip-address/{ip_address}")
         
         if "response" in response:
             host = response["response"]
@@ -112,15 +112,20 @@ def delete_host_by_ip(client: CiscoAPIClient, ip_address: str):
     print("="*60)
     
     try:
-        response = client.delete(f"/host/{ip_address}")
+        response = client.delete(f"/host/ip-address/{ip_address}")
         
         if "response" in response:
             result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
+                "Response", response.get("response", "N/A")
             ], [
-                "URL", response["response"].get("url", "N/A")
+                "Version", response.get("version", "N/A")
             ]]
-            print("\nHost eliminado exitosamente:")
+            
+            if response.get("response") == True:
+                print("\nHost eliminado exitosamente:")
+            else:
+                print("\nError al eliminar host:")
+            
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
         else:
             print(json.dumps(response, indent=2))

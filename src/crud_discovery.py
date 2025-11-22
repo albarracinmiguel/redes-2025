@@ -121,6 +121,44 @@ def get_discovery_by_id(client: CiscoAPIClient, discovery_id: str):
         print(f"Error: {e}")
         return None
 
+def getNetworkDeviceByDiscoveryId(client: CiscoAPIClient, discovery_id: str):
+    """GET - Obtener Network Device por Discovery ID"""
+    print("\n" + "="*60)
+    print(f"GET - Obtener Network Device por Discovery ID: {discovery_id}")
+    print("="*60)
+    
+    try:
+        response = client.get(f"/discovery/{discovery_id}/networkDevice")
+        
+        if "response" in response:  
+            devices = response["response"]
+            print(f"\nTotal de discoveries: {len(devices)}")
+            
+            # Formatear en tabla
+            table_data = []
+            for device in devices:
+                table_data.append([
+                    device.get("id", "N/A"),
+                    device.get("name", "N/A"),
+                    device.get("ipAddress", "N/A"),
+                    device.get("discoveryType", "N/A"),
+                    device.get("discoveryStatus", "N/A"),
+                    device.get("numDevices", "N/A")
+                ])
+            
+            print(tabulate(
+                table_data,
+                headers=["ID", "Name", "IP Address", "Discovery Type", "Discovery Status", "Num Devices"],
+                tablefmt='grid'
+            ))
+        else:
+            print(json.dumps(response, indent=2))
+            
+        return response
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 def get_discovery_count(client: CiscoAPIClient):
     """GET - Obtener cantidad de discoveries"""
