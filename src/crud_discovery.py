@@ -188,11 +188,7 @@ def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str, disco
 
     try:
         response = client.put("/discovery", data)
-        
-        if "response" in response:
-
-            print(json.dumps(response, indent=2))
-            
+        print(json.dumps(response, indent=2))
         return response
         
     except Exception as e:
