@@ -69,7 +69,7 @@ def create_cli_credential(client: CiscoAPIClient, username: str, password: str,
         if "response" in response:
             print(json.dumps(response, indent=2))
             
-        return respons["id"]
+        return response["id"]
         
     except Exception as e:
         print(f"Error: {e}")
@@ -137,9 +137,9 @@ def delete_global_credential(client: CiscoAPIClient, credential_id: str):
             ]]
             
             if response.get("response") == True:
-                print("\n✓ Credencial eliminada exitosamente:")
+                print("\n Credencial eliminada exitosamente:")
             else:
-                print("\n✗ Error al eliminar credencial:")
+                print("\n Error al eliminar credencial:")
             
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
         else:

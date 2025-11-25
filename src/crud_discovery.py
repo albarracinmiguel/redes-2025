@@ -174,7 +174,7 @@ def get_discovery_count(client: CiscoAPIClient):
         return None
 
 
-def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str, discovery_type: str, ip_range: str = None):
+def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str, discoveryStatus: str):
     """PUT - Actualizar discovery"""
     print("\n" + "="*60)
     print(f"PUT - Actualizar Discovery ID: {discovery_id}")
@@ -183,7 +183,7 @@ def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str, disco
     data = {
         "id": discovery_id,
         "name": name,
-        "discoveryType": discovery_type
+        "discoveryStatus": discoveryStatus
     }
 
     try:
@@ -210,13 +210,7 @@ def delete_discovery_by_id(client: CiscoAPIClient, discovery_id: str):
         response = client.delete(f"/discovery/{discovery_id}")
         
         if "response" in response:
-            result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
-            ], [
-                "URL", response["response"].get("url", "N/A")
-            ]]
-            print("\nDiscovery eliminado exitosamente:")
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
+            print(json.dumps(response, indent=2))
         else:
             print(json.dumps(response, indent=2))
             

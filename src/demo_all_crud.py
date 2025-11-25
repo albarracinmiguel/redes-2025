@@ -49,9 +49,9 @@ def demo_all_endpoints():
     time.sleep(1)
     
     # DELETE - Eliminar dispositivo por IP
-    print("\nDELETE - Eliminar dispositivo por IP: 172.16.0.199")
-    delete_network_device_by_ip(client, "172.16.0.199")
-    time.sleep(1)
+    # print("\nDELETE - Eliminar dispositivo por IP: 172.16.0.199")
+    # delete_network_device_by_ip(client, "172.16.0.199")
+    # time.sleep(1)
     
     # ========================================================================
     # 2. HOSTS 
@@ -122,12 +122,12 @@ def demo_all_endpoints():
     
     # POST - Crear nuevo discovery
     print("\nPOST - Crear nuevo discovery")
-    discovery_id = create_discovery(client, "discovery ejemplo", discovery_type="Range", ip_address_list="192.168.100.106")
+    discovery_id = create_discovery(client, "discovery ejemplo", discovery_type="Range", ip_range="192.168.100.106")
     time.sleep(1)
     
     # PUT - Actualizar discovery
     print("\nPUT - Actualizar discovery ID: ", discovery_id)
-    update_discovery(client, discovery_id, discovery_type = "CDP", name="CDP - Modificado")
+    update_discovery(client, discovery_id, name="CDP - Modificado", discoveryStatus="active")
     time.sleep(1)
     
     # DELETE - Eliminar discovery
