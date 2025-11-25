@@ -28,17 +28,9 @@ def create_discovery(client: CiscoAPIClient, name: str, ip_range: str, discovery
         response = client.post("/discovery", data)
         
         if "response" in response:
-            result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
-            ], [
-                "URL", response["response"].get("url", "N/A")
-            ]]
-            print("\nDiscovery iniciado exitosamente:")
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-        else:
             print(json.dumps(response, indent=2))
             
-        return response
+        return response["discoveryId"]
         
     except Exception as e:
         print(f"Error: {e}")
@@ -182,33 +174,23 @@ def get_discovery_count(client: CiscoAPIClient):
         return None
 
 
-def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str = None, ip_range: str = None):
+def update_discovery(client: CiscoAPIClient, discovery_id: str, name: str, discovery_type: str, ip_range: str = None):
     """PUT - Actualizar discovery"""
     print("\n" + "="*60)
     print(f"PUT - Actualizar Discovery ID: {discovery_id}")
     print("="*60)
     
     data = {
-        "id": discovery_id
+        "id": discovery_id,
+        "name": name,
+        "discoveryType": discovery_type
     }
-    
-    if name:
-        data["name"] = name
-    if ip_range:
-        data["ipAddressList"] = ip_range
-    
+
     try:
         response = client.put("/discovery", data)
         
         if "response" in response:
-            result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
-            ], [
-                "URL", response["response"].get("url", "N/A")
-            ]]
-            print("\nDiscovery actualizado exitosamente:")
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-        else:
+
             print(json.dumps(response, indent=2))
             
         return response
@@ -264,13 +246,13 @@ if __name__ == "__main__":
     # create_discovery(client, "Test-Discovery", "192.168.1.1-192.168.1.10")
     
     # 4. GET - Obtener discovery especifico
-    # get_discovery_by_id(client, "discovery-id-here")
+    # get_discovery_by_id(client, "ID")
     
     # 5. PUT - Actualizar discovery
-    # update_discovery(client, "discovery-id-here", name="Updated-Discovery")
+    # update_discovery(client, "ID", name="Updated-Discovery")
     
     # 6. DELETE - Eliminar discovery
-    # delete_discovery_by_id(client, "discovery-id-here")
+    # delete_discovery_by_id(client, "ID")
     
     print("\n" + "="*60)
     print("Demostracion completada")

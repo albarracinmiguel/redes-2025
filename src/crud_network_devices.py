@@ -138,7 +138,7 @@ def update_network_device(client: CiscoAPIClient, ip_address: str, global_creden
                 "Version", response.get("version", "N/A")
             ]]
             
-            print("\n✓ Dispositivo actualizado exitosamente:")
+            print("\nDispositivo actualizado exitosamente:")
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
         else:
             print(json.dumps(response, indent=2))
@@ -187,14 +187,7 @@ def delete_network_device_by_ip(client: CiscoAPIClient, ip_address: str):
         response = client.delete(f"/network-device/ip-address/{ip_address}")
         
         if "response" in response:
-            result = [[
-                "Task ID", response["response"].get("taskId", "N/A")
-            ], [
-                "URL", response["response"].get("url", "N/A")
-            ]]
-            print("\nDispositivo eliminado exitosamente:")
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-        else:
+            print("\nRespuesta de la API:")
             print(json.dumps(response, indent=2))
             
         return response

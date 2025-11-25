@@ -67,22 +67,9 @@ def create_cli_credential(client: CiscoAPIClient, username: str, password: str,
         response = client.post("/global-credential/cli", payload)
         
         if "response" in response:
-            result = [[
-                "Response", response.get("response", "N/A")
-            ], [
-                "Version", response.get("version", "N/A")
-            ]]
-            
-            if response.get("response") == True:
-                print("\n✓ Credencial creada exitosamente:")
-            else:
-                print("\n✗ Error al crear credencial:")
-            
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-        else:
             print(json.dumps(response, indent=2))
             
-        return response
+        return respons["id"]
         
     except Exception as e:
         print(f"Error: {e}")

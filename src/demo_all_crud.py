@@ -1,6 +1,6 @@
 """
 Script maestro para ejecutar todas las operaciones CRUD
-Basado en los ejemplos de la colección de Postman
+
 """
 from api_client import CiscoAPIClient
 from crud_network_devices import *
@@ -70,10 +70,10 @@ def demo_all_endpoints():
     get_host_by_ip(client, "172.16.1.33")
     time.sleep(1)
     
-    # DELETE - Eliminar host por IP
-    print("\nDELETE - Eliminar host por IP: 172.16.1.33")
-    delete_host_by_ip(client, "172.16.1.33")
-    time.sleep(1)
+    # DELETE - Eliminar host por IP - DESCOMENTAR EN CASO DE QUERER ELIMINAR, PERO NO SE PUEDE AGREGAR HOSTS POR API
+    # print("\nDELETE - Eliminar host por IP: 172.16.1.33")
+    # delete_host_by_ip(client, "172.16.1.33")
+    # time.sleep(1)
     
     # ========================================================================
     # 3. USERS
@@ -95,7 +95,7 @@ def demo_all_endpoints():
     
     # PUT - Actualizar usuario
     print("\nPUT - Actualizar usuario: testusername")
-    update_user(client, "testusername", new_password="testuser123")
+    update_user(client, "testusername", new_password="testuser123", new_role="ROLE_ADMIN")
     time.sleep(1)
     
     # DELETE - Eliminar usuario
@@ -122,22 +122,22 @@ def demo_all_endpoints():
     
     # POST - Crear nuevo discovery
     print("\nPOST - Crear nuevo discovery")
-    create_discovery(client, "discovery ejemplo", "192.168.100.106")
+    discovery_id = create_discovery(client, "discovery ejemplo", discovery_type="Range", ip_address_list="192.168.100.106")
     time.sleep(1)
     
     # PUT - Actualizar discovery
-    print("\nPUT - Actualizar discovery ID: 0")
-    update_discovery(client, "0", name="CDP - Modificado")
+    print("\nPUT - Actualizar discovery ID: ", discovery_id)
+    update_discovery(client, discovery_id, discovery_type = "CDP", name="CDP - Modificado")
     time.sleep(1)
     
     # DELETE - Eliminar discovery
-    print("\nDELETE - Eliminar discovery ID: 13")
-    delete_discovery_by_id(client, "13")
+    print("\nDELETE - Eliminar discovery ID:", discovery_id)
+    delete_discovery_by_id(client, discovery_id)
     time.sleep(1)
     
-    # ========================================================================
-    # 5. CREDENTIALS - CRUD
-    # ========================================================================
+    # # ========================================================================
+    # # 5. CREDENTIALS - CRUD
+    # # ========================================================================
     print_section_header("5. CREDENTIALS - CRUD Completo")
     
     print("\nGET - Listar todas las credenciales globales CLI")
@@ -146,20 +146,20 @@ def demo_all_endpoints():
     
     # POST - Crear nueva credencial
     print("\nPOST - Crear nueva credencial CLI")
-    create_cli_credential(client, "admin2", "admin2", "admin2", 
-                          "Postman", "Ingresado desde Postman")
+    credential_id = create_cli_credential(client, "admin2", "admin2", "admin2", 
+                          "Postman", "Ingresado desde API")
     time.sleep(1)
     
     # PUT - Actualizar credencial (requiere ID de la credencial)
     print("\nPUT - Actualizar credencial CLI")
-    update_cli_credential(client, "3eb4d174-af61-41d0-82a0-00b05bc44147", 
-                          "admin2", "admin2", "admin2",
-                          "Postman Actualizado", "Actualizado desde Postman")
+    update_cli_credential(client, credential_id, 
+                          "admin3", "admin3", "admin3",
+                          "Actualizado", "Actualizado desde API")
     time.sleep(1)
     
     # DELETE - Eliminar credencial (requiere ID de la credencial)
-    print("\nDELETE - Eliminar credencial global")
-    delete_global_credential(client, "ac264c9c-2669-4c03-a107-da44be7da6dd")
+    print("\nDELETE - Eliminar credencial global ID:", credential_id)
+    delete_global_credential(client, credential_id)
     time.sleep(1)
 
 

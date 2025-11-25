@@ -115,19 +115,7 @@ def delete_host_by_ip(client: CiscoAPIClient, ip_address: str):
         response = client.delete(f"/host/ip-address/{ip_address}")
         
         if "response" in response:
-            result = [[
-                "Response", response.get("response", "N/A")
-            ], [
-                "Version", response.get("version", "N/A")
-            ]]
-            
-            if response.get("response") == True:
-                print("\nHost eliminado exitosamente:")
-            else:
-                print("\nError al eliminar host:")
-            
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-        else:
+            print("\nRespuesta de la API:")
             print(json.dumps(response, indent=2))
             
         return response

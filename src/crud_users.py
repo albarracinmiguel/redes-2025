@@ -7,7 +7,7 @@ from tabulate import tabulate
 import json
 
 
-def create_user(client: CiscoAPIClient, username: str, password: str, role: str = "ROLE-OBSERVER"):
+def create_user(client: CiscoAPIClient, username: str, password: str, role: str = "ROLE_ADMIN"):
     """POST - Crear un nuevo usuario"""
     print("\n" + "="*60)
     print("POST - Crear nuevo Usuario")
@@ -16,7 +16,7 @@ def create_user(client: CiscoAPIClient, username: str, password: str, role: str 
     data = {
         "username": username,
         "password": password,
-        "role": role
+        "authorization": [{"role": role}]
     }
     
     print(f"Creando usuario: {username} con rol: {role}")
@@ -24,16 +24,17 @@ def create_user(client: CiscoAPIClient, username: str, password: str, role: str 
     try:
         response = client.post("/user", data)
         
-        if "response" in response:
-            user = response["response"]
+        if "response" in response and response["response"] == True:
             result = [
-                ["Username", user.get("username", "N/A")],
-                ["Role", user.get("role", "N/A")],
-                ["Authorization", user.get("authorization", "N/A")]
+                ["Username", username],
+                ["Password", "***" + password[-4:] if len(password) >= 4 else "***"],
+                ["Role", role]
             ]
             print("\nUsuario creado exitosamente:")
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
+            print(f"\nRespuesta de la API: {json.dumps(response, indent=2)}")
         else:
+            print("\nRespuesta de la API:")
             print(json.dumps(response, indent=2))
             
         return response
@@ -118,27 +119,30 @@ def update_user(client: CiscoAPIClient, username: str, new_password: str = None,
     print("="*60)
     
     data = {
-        "username": username
+        "username": username,
+        "password": new_password,
+        "authorization": [{"role": new_role}]
     }
     
     if new_password:
         data["password"] = new_password
     if new_role:
-        data["role"] = new_role
+        data["authorization"] = [{"role": new_role}]
     
     try:
         response = client.put("/user", data)
         
-        if "response" in response:
-            user = response["response"]
+        if "response" in response and response["response"] == True:
             result = [
-                ["Username", user.get("username", "N/A")],
-                ["Role", user.get("role", "N/A")],
-                ["Authorization", user.get("authorization", "N/A")]
+                ["Username", username],
+                ["Password", new_password],
+                ["Role", new_role]
             ]
             print("\nUsuario actualizado exitosamente:")
             print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
+            print(f"\nRespuesta de la API: {json.dumps(response, indent=2)}")
         else:
+            print("\nRespuesta de la API:")
             print(json.dumps(response, indent=2))
             
         return response
