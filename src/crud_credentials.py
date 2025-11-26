@@ -65,9 +65,7 @@ def create_cli_credential(client: CiscoAPIClient, username: str, password: str,
         }
         
         response = client.post("/global-credential/cli", payload)
-        
-        if "response" in response:
-            print(json.dumps(response, indent=2))
+        print(json.dumps(response, indent=2))
             
         return response["id"]
         

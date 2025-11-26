@@ -25,15 +25,6 @@ def create_user(client: CiscoAPIClient, username: str, password: str, role: str 
         response = client.post("/user", data)
         
         if "response" in response and response["response"] == True:
-            result = [
-                ["Username", username],
-                ["Password", "***" + password[-4:] if len(password) >= 4 else "***"],
-                ["Role", role]
-            ]
-            print("\nUsuario creado exitosamente:")
-            print(tabulate(result, headers=["Campo", "Valor"], tablefmt='grid'))
-            print(f"\nRespuesta de la API: {json.dumps(response, indent=2)}")
-        else:
             print("\nRespuesta de la API:")
             print(json.dumps(response, indent=2))
             
